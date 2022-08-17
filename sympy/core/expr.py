@@ -733,7 +733,7 @@ class Expr(Basic, EvalfMixin):
 
         factors = diff.as_coeff_mul()[1]
         if len(factors) > 1:  # avoid infinity recursion
-            fac_zero = [fac.equals(0) for fac in factors]
+            fac_zero = [fac.equals(0, doit=doit) for fac in factors]
             if None not in fac_zero:  # every part can be decided
                 return any(fac_zero)
 
