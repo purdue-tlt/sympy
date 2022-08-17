@@ -690,7 +690,7 @@ class Expr(Basic, EvalfMixin):
             return None
         return True
 
-    def equals(self, other, failing_expression=False):
+    def equals(self, other, failing_expression=False, doit=True):
         """Return True if self == other, False if it doesn't, or None. If
         failing_expression is True then the expression which did not simplify
         to a 0 will be returned instead of None.
@@ -721,7 +721,7 @@ class Expr(Basic, EvalfMixin):
         # don't worry about doing simplification steps one at a time
         # because if the expression ever goes to 0 then the subsequent
         # simplification steps that are done will be very fast.
-        diff = factor_terms(simplify(self - other), radical=True)
+        diff = factor_terms(simplify(self - other, doit=doit), radical=True)
 
         if not diff:
             return True
