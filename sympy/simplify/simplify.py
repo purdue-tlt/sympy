@@ -594,8 +594,11 @@ def simplify(expr, ratio=1.7, measure=count_ops, rational=False, inverse=False, 
         inverse=kwargs.get('inverse', inverse),
         doit=kwargs.get('doit', doit))
     # no routine for Expr needs to check for is_zero
-    if isinstance(expr, Expr) and expr.is_zero:
-        return S.Zero if not expr.is_Number else expr
+    try:
+        if isinstance(expr, Expr) and expr.is_zero:
+            return S.Zero if not expr.is_Number else expr
+    except:
+        pass
 
     _eval_simplify = getattr(expr, '_eval_simplify', None)
     if _eval_simplify is not None:
