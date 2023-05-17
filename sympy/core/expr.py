@@ -707,7 +707,7 @@ class Expr(Basic, EvalfMixin):
             return None
         return True
 
-    def equals(self, other, failing_expression=False):
+    def equals(self, other, failing_expression=False, doit=True):
         """Return True if self == other, False if it does not, or None. If
         failing_expression is True then the expression which did not simplify
         to a 0 will be returned instead of None.
@@ -738,7 +738,7 @@ class Expr(Basic, EvalfMixin):
         # don't worry about doing simplification steps one at a time
         # because if the expression ever goes to 0 then the subsequent
         # simplification steps that are done will be very fast.
-        diff = factor_terms(simplify(self - other), radical=True)
+        diff = factor_terms(simplify(self - other, doit=doit), radical=True)
 
         if not diff:
             return True
@@ -750,7 +750,7 @@ class Expr(Basic, EvalfMixin):
 
         factors = diff.as_coeff_mul()[1]
         if len(factors) > 1:  # avoid infinity recursion
-            fac_zero = [fac.equals(0) for fac in factors]
+            fac_zero = [fac.equals(0, doit=doit) for fac in factors]
             if None not in fac_zero:  # every part can be decided
                 return any(fac_zero)
 
@@ -801,7 +801,10 @@ class Expr(Basic, EvalfMixin):
                     # we will handle the checking ourselves using nsimplify
                     # to see if we are in the right ballpark or not and if so
                     # *then* the simplification will be attempted.
-                    sol = solve(diff, s, simplify=False)
+                    if s.is_Symbol:
+                        sol = list(solveset(diff, s))
+                    else:
+                        sol = [s]
                     if sol:
                         if s in sol:
                             # the self-consistent result is present

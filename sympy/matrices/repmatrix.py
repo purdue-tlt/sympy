@@ -272,7 +272,7 @@ class RepMatrix(MatrixBase):
         else:
             return self._fromrep(rep.applyfunc(lambda e: e.conjugate()))
 
-    def equals(self, other, failing_expression=False):
+    def equals(self, other, failing_expression=False, doit=True):
         """Applies ``equals`` to corresponding elements of the matrices,
         trying to prove that the elements are equivalent, returning True
         if they are, False if any pair is not, and None (or the first
@@ -306,7 +306,7 @@ class RepMatrix(MatrixBase):
         rv = True
         for i in range(self.rows):
             for j in range(self.cols):
-                ans = self[i, j].equals(other[i, j], failing_expression)
+                ans = self[i, j].equals(other[i, j], failing_expression, doit)
                 if ans is False:
                     return False
                 elif ans is not True and rv is True:

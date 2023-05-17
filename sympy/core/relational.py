@@ -363,7 +363,7 @@ class Relational(Boolean, EvalfMixin):
 
         return r
 
-    def equals(self, other, failing_expression=False):
+    def equals(self, other, failing_expression=False, doit=True):
         """Return True if the sides of the relationship are mathematically
         identical and the type of relationship is the same.
         If failing_expression is True, return the expression whose truth value
@@ -376,13 +376,14 @@ class Relational(Boolean, EvalfMixin):
                 if a.func != b.func:
                     return False
                 left, right = [i.equals(j,
-                                        failing_expression=failing_expression)
+                                        failing_expression=failing_expression,
+                                        doit=doit)
                                for i, j in zip(a.args, b.args)]
                 if left is True:
                     return right
                 if right is True:
                     return left
-                lr, rl = [i.equals(j, failing_expression=failing_expression)
+                lr, rl = [i.equals(j, failing_expression=failing_expression, doit=doit)
                           for i, j in zip(a.args, b.reversed.args)]
                 if lr is True:
                     return rl
@@ -400,11 +401,13 @@ class Relational(Boolean, EvalfMixin):
                 if a.func != b.func:
                     return False
                 left = a.lhs.equals(b.lhs,
-                                    failing_expression=failing_expression)
+                                    failing_expression=failing_expression,
+                                    doit=doit)
                 if left is False:
                     return False
                 right = a.rhs.equals(b.rhs,
-                                     failing_expression=failing_expression)
+                                     failing_expression=failing_expression,
+                                     doit=doit)
                 if right is False:
                     return False
                 if left is True:

@@ -553,12 +553,12 @@ class BlockMatrix(MatrixExpr):
     def is_structurally_symmetric(self):
         return self.rowblocksizes == self.colblocksizes
 
-    def equals(self, other):
+    def equals(self, other, doit=True):
         if self == other:
             return True
         if (isinstance(other, BlockMatrix) and self.blocks == other.blocks):
             return True
-        return super().equals(other)
+        return super().equals(other, doit)
 
 
 class BlockDiagMatrix(BlockMatrix):

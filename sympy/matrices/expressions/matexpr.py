@@ -391,7 +391,7 @@ class MatrixExpr(Expr):
                 a[i, j] = self[i, j]
         return a
 
-    def equals(self, other):
+    def equals(self, other, doit=True):
         """
         Test elementwise equality between matrices, potentially of different
         types
@@ -400,7 +400,7 @@ class MatrixExpr(Expr):
         >>> Identity(3).equals(eye(3))
         True
         """
-        return self.as_explicit().equals(other)
+        return self.as_explicit().equals(other, doit)
 
     def canonicalize(self):
         return self
